@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"testing"
 
-	splitcsv "split_csv/split_csv"
+	splitcsv "split_csv/core"
 )
 
 type Args struct {

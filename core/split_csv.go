@@ -66,7 +66,7 @@ func writcsv(total_len, split_len int, fileNameCsv string, filePart int, records
 	for i := filePart; i != 0; i-- {
 		csvFile, err := os.Create("./split_data/" + filename + "_part" + strconv.Itoa(j) + ".csv")
 		if err != nil {
-			return fmt.Errorf(fmt.Sprintf("failed creating file: %s", err))
+			return fmt.Errorf(fmt.Sprintf("Error!: failed creating file: %s", err))
 		}
 		defer csvFile.Close()
 
@@ -110,15 +110,24 @@ func getFileName(path string) (string, string) {
 }
 
 func Split_Csv(path *string, filePart *int) (int, error) {
+	if *path == "" {
+		msg := fmt.Sprintf("Error!: Your file path is empty! Please fill the file path. (the command goes like this 'main -p \"your file path\" -fp \"fill with number of how many you want to split the file\"")
+		log.Fatalf(msg)
+	}
+
+	if *filePart == 0 {
+		msg := fmt.Sprintf("Error!: Your file parts is 0! Please fill the file parts. (the command goes like this 'main -p \"your file path\" -fp \"fill with number of how many you want to split the file\"")
+		log.Fatalf(msg)
+	}
+
 	records, header := read_csv(*path)
 	split_length := split_len_part(len(records), int(*filePart))
 
 	os.RemoveAll("./split_data/")
 	err2 := os.MkdirAll("split_data/", os.ModePerm)
 	if err2 != nil {
-		msg := fmt.Sprintf("Couldn't create directory 'split_data/' : %v", err2)
+		msg := fmt.Sprintf("Error!: Couldn't create directory 'split_data/' : %v", err2)
 		log.Fatalf(msg)
-
 	}
 
 	err := writcsv(len(records), split_length, filepath.Base(*path), *filePart, records, header)
