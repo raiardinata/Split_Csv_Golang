@@ -1,4 +1,4 @@
-./split_data
-./split_csv
-./split_csv.exe
-./testing_data/
+split_data
+split_csv
+split_csv.exe
+testing_data
